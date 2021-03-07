@@ -2,14 +2,33 @@
 
 This repository is playing with using entry points other than a javascript file(s); for example html and css files
 
+## Development
+
+### Build
+
 ```
 npm install
 npm run build
 ```
 
-## html-loader
+### Serve
 
-### Version 2.1.0
+```
+npm run build
+npx serve ./dist
+```
+
+- or -
+
+```
+npm run serve
+```
+
+## Issues
+
+### html-loader
+
+#### Version 2.1.0
 
 1.  Modify the `package.json`. Change the version of `html-loader` to `2.1.0`. Default at time of pull.
 
@@ -37,7 +56,7 @@ npm run build
     webpack 5.24.3 compiled successfully in 534 ms
     ```
 
-### Version 2.1.1
+#### Version 2.1.1
 
 1.  Modify the `package.json`. Change the version of `html-loader` to `2.1.1`
 
@@ -80,5 +99,11 @@ npm run build
     npm ERR! path /private/tmp/website
     npm ERR! command failed
     npm ERR! command sh -c webpack --mode=production
-
     ```
+
+### Artifact path prepended with auto
+
+~~The filenames of the artifact injected in the index.html seem to be getting
+prepended with `auto[contenthash]` which causes them to 404 when loaded~~
+
+- [Fix](https://stackoverflow.com/a/65272040)

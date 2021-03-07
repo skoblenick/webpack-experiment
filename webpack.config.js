@@ -5,39 +5,76 @@ module.exports = ({ mode }) => {
   const pathToIndexJs = require.resolve('./src/index.js');
 
   return {
-    entry: [pathToIndexHtml, pathToIndexJs],
+    context: path.resolve(__dirname, 'src'),
+    entry: [
+      './index.html',
+      // pathToIndexJs, // disbled temporarily
+    ],
     output: {
-      publicPath: 'http://cdn.example.com/[contenthash]/',
+      // assetModuleFilename: '[name][ext]',
+      /**
+       * @ref {@link https://webpack.js.org/loaders/html-loader/#cdn}
+       */
+      // publicPath: 'http://cdn.example.com/',
+      publicPath: "" // override the auto prefix injected by webpack
     },
     module: {
       rules: [
+        /**
+         * HTML
+         */
+        {
+          test: /\.html$/,
+          type: 'asset/resource',
+          generator: {
+            filename: '[name][ext]',
+          },
+        },
         {
           test: /\.html$/i,
           use: [
-            'file-loader',
+            // 'file-loader', // disabled to prevent html from being mangled in dist
             'extract-loader',
             {
               loader: 'html-loader',
               options: {
                 esModule: false,
-                sources: {
-                  list: [
-                    { tag: 'link', attribute: 'href', type: 'src' },
-                    { tag: 'img', attribute: 'src', type: 'src' },
-                    {
-                      tag: 'img',
-                      attribute: 'data-src',
-                      type: 'src',
-                      filter: (tag, attribute, attributes, resourcePath) => {
-                        return true;
-                      },
-                    },
-                  ],
-                },
+                // sources: {
+                //   list: [
+                //     { tag: 'script', attribute: 'src', type: 'src' },
+                //     { tag: 'link', attribute: 'href', type: 'src' },
+                //     { tag: 'img', attribute: 'src', type: 'src' },
+                //     {
+                //       tag: 'img',
+                //       attribute: 'data-src',
+                //       type: 'src',
+                //       filter: (tag, attribute, attributes, resourcePath) => {
+                //         return true;
+                //       },
+                //     },
+                //   ],
+                // },
               },
             },
           ],
         },
+        /**
+         * JavaScript
+         */
+        {
+          test: /\.js$/i,
+          loader: 'babel-loader',
+        },
+        {
+          test: /\.js$/,
+          type: 'asset/resource',
+          generator: {
+            filename: '[name].[contenthash][ext]',
+          },
+        },
+        /**
+         * Styles
+         */
         {
           test: /\.css$/i,
           use: [
@@ -51,6 +88,9 @@ module.exports = ({ mode }) => {
             },
           ],
         },
+        /**
+         * Assets
+         */
         {
           test: /\.jpg$/,
           use: [
