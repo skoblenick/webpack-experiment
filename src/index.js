@@ -1,7 +1,8 @@
 // import { install } from 'ga-gtag';
-console.log('here')
-// require('html-loader?{"sources":{"list":[{"tag":"img","attribute":"src","type":"src"},{"tag":"img","attribute":"data-src","type":"src"}]}}!./index.html');
+// //const { install } = require('ga-gtag');
 
-// import './index.scss';
 
+// const GOOGLE_ANALYTICS='123'
 // install(GOOGLE_ANALYTICS);
+
+console.log('here')
